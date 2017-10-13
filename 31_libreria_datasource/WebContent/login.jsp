@@ -8,6 +8,7 @@
 </head>
 <body>
 	<center>
+	<h1>Cambio de prueba</h1>
 		<form action="Controller?op=doLogin" method="POST">
 		 <%String user="";
 		 Cookie[] todas=request.getCookies();
