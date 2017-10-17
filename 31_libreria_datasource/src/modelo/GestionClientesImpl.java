@@ -12,9 +12,9 @@ import javax.sql.DataSource;
 
 import javabeans.Cliente;
 
-public class GestionClientes {
+class GestionClientesImpl implements GestionClientes {
 	DataSource ds;
-    public GestionClientes(){
+    public GestionClientesImpl(){
     	try {
 			Context ctx=new InitialContext();
 			ds=(DataSource)ctx.lookup("java:comp/env/reflibros");
@@ -24,6 +24,10 @@ public class GestionClientes {
         
     }
 	
+	/* (non-Javadoc)
+	 * @see modelo.GestionClientes#estaRegistrado(java.lang.String, java.lang.String)
+	 */
+	@Override
 	public boolean estaRegistrado(String user, String pass) {
 		boolean res=false;
 		try(Connection con=ds.getConnection()){
@@ -42,6 +46,10 @@ public class GestionClientes {
 		return res;
 	}
 
+	/* (non-Javadoc)
+	 * @see modelo.GestionClientes#registrar(javabeans.Cliente)
+	 */
+	@Override
 	public void registrar(Cliente c) {
 		try(Connection cn=ds.getConnection()) {                       
 	           

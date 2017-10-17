@@ -24,9 +24,9 @@ import javabeans.Tema;
  *
  * @author Profesortarde
  */
- public class GestionTemas {
+ class GestionTemasImpl implements GestionTemas {
 	 DataSource ds;
-	    public GestionTemas(){
+	    public GestionTemasImpl(){
 	    	try {
 				Context ctx=new InitialContext();
 				ds=(DataSource)ctx.lookup("java:comp/env/reflibros");
@@ -36,7 +36,11 @@ import javabeans.Tema;
 	        
 	    }
  
-    public List<Tema> obtenerTemas(){
+    /* (non-Javadoc)
+	 * @see modelo.GestionTemas#obtenerTemas()
+	 */
+    @Override
+	public List<Tema> obtenerTemas(){
         List<Tema> lista=new ArrayList<> ();
            
         try(Connection cn=ds.getConnection()) {                       

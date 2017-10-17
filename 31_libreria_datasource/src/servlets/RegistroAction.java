@@ -11,13 +11,15 @@ import javax.servlet.http.HttpServletResponse;
 import javabeans.Cliente;
 import modelo.GestionClientes;
 
+import modelo.LibreriaFactory;
+
 
 
 @WebServlet("/RegistroAction")
 public class RegistroAction extends HttpServlet {
 	
 	protected void service(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		GestionClientes gestion=new GestionClientes();
+		GestionClientes gestion=LibreriaFactory.getGestionClientes();
                 Cliente c=new Cliente(0,request.getParameter("usuario"),
                 request.getParameter("password"),
                         request.getParameter("email"),

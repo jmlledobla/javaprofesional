@@ -10,7 +10,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import modelo.GestionClientes;
-import modelo.GestionTemas;
+
+import modelo.LibreriaFactory;
 
 
 
@@ -19,7 +20,7 @@ public class LoginAction extends HttpServlet {
 	
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		String url;
-		GestionClientes gestion=new GestionClientes();
+		GestionClientes gestion=LibreriaFactory.getGestionClientes();
 		
 		if(gestion.estaRegistrado(request.getParameter("user"),request.getParameter("pwd"))){
 			

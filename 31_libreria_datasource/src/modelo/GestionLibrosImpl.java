@@ -25,9 +25,9 @@ import javabeans.Tema;
  *
  * @author Profesortarde
  */
- public class GestionLibros {
+ class GestionLibrosImpl implements GestionLibros {
 	 DataSource ds;
-	    public GestionLibros(){
+	    public GestionLibrosImpl(){
 	    	try {
 				Context ctx=new InitialContext();
 				ds=(DataSource)ctx.lookup("java:comp/env/reflibros");
@@ -37,12 +37,20 @@ import javabeans.Tema;
 	        
 	    }
     
-    public List<Libro> recuperarLibros(){
+    /* (non-Javadoc)
+	 * @see modelo.GestionLibros#recuperarLibros()
+	 */
+    @Override
+	public List<Libro> recuperarLibros(){
        String sql="select * from libros" ;
        return libros(sql);
     }
     
-    public List<Libro> recuperarLibros(int idTema){
+    /* (non-Javadoc)
+	 * @see modelo.GestionLibros#recuperarLibros(int)
+	 */
+    @Override
+	public List<Libro> recuperarLibros(int idTema){
        String sql="select * from libros where idTema="+idTema ; 
        return libros(sql);
     }
