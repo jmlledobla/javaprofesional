@@ -1,6 +1,12 @@
+/*
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
 package modelo;
 
 import java.sql.Connection;
+import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
@@ -15,71 +21,50 @@ import javax.sql.DataSource;
 import javabeans.Libro;
 import javabeans.Tema;
 
-public class GestionLibros {
-
-DataSource ds;
-	
-	public GestionLibros() {
-		//carga del driver
-		try {
-			Context ctx=new InitialContext();
-			ds=(DataSource)ctx.lookup("java:comp/env/reflibros");
-		} catch (NamingException e) {
-			
-			e.printStackTrace();
-		}
-	}
-	
-public List<Libro> recuperarTodos(){
-		
-		ArrayList<Libro> libros=new ArrayList<>();
-		//creamos la conexiÛn contra la base de datos
-				try (Connection cn=ds.getConnection()){							
-					//definimos la instrucciÛn SQL y la enviamos a travÈs del objeto Statement
-					String sql="Select * from libros";
-					Statement st=cn.createStatement();
-					ResultSet rs=st.executeQuery(sql);
-					while(rs.next()) {
-						libros.add(new Libro(rs.getInt("isbn"),
-								             rs.getString("titulo"),
-								             rs.getString("autor"),
-								             rs.getDouble("precio"),
-								             rs.getInt("paginas"), 
-								             rs.getInt("idTema")));
-								
-					}										
-				}
-				catch(SQLException ex) {
-					ex.printStackTrace();
-				}
-		
-		return libros;
-	}
-
-public List<Libro> recuperarLibrosTema(int id){
-	
-	ArrayList<Libro> libros=new ArrayList<>();
-	//creamos la conexiÛn contra la base de datos
-			try (Connection cn=ds.getConnection()){							
-				//definimos la instrucciÛn SQL y la enviamos a travÈs del objeto Statement
-				String sql="Select * from libros where idTema="+id;
-				Statement st=cn.createStatement();
-				ResultSet rs=st.executeQuery(sql);
-				while(rs.next()) {
-					libros.add(new Libro(rs.getInt("isbn"),
-							             rs.getString("titulo"),
-							             rs.getString("autor"),
-							             rs.getDouble("precio"),
-							             rs.getInt("paginas"), 
-							             rs.getInt("idTema")));
-							
-				}										
+/**
+ *
+ * @author Profesortarde
+ */
+ public class GestionLibros {
+	 DataSource ds;
+	    public GestionLibros(){
+	    	try {
+				Context ctx=new InitialContext();
+				ds=(DataSource)ctx.lookup("java:comp/env/reflibros");
+			} catch (NamingException e) {			
+				e.printStackTrace();
 			}
-			catch(SQLException ex) {
-				ex.printStackTrace();
-			}
-	
-	return libros;
-}
-	
+	        
+	    }
+    
+    public List<Libro> recuperarLibros(){
+       String sql="select * from libros" ;
+       return libros(sql);
+    }
+    
+    public List<Libro> recuperarLibros(int idTema){
+       String sql="select * from libros where idTema="+idTema ; 
+       return libros(sql);
+    }
+    private List<Libro> libros(String sql){
+       List<Libro> lista=new ArrayList<> ();
+           
+        try(Connection cn=ds.getConnection();) {                       
+            //Paso 2: Envio SQL
+           
+            Statement st=cn.createStatement();
+            ResultSet rs=st.executeQuery(sql);            
+            while(rs.next()){
+                lista.add(new Libro(rs.getInt("isbn"),
+                        rs.getString("titulo"),
+                        rs.getString("autor"),
+                        rs.getDouble("precio"),
+                        rs.getInt("paginas"),
+                        rs.getInt("idTema")));
+            }
+        }  catch (SQLException ex) {
+            ex.printStackTrace();
+        }   
+        return lista; 
+    }
 }

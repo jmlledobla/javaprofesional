@@ -7,8 +7,8 @@
 <title>Insert title here</title>
 </head>
 <body>
-	<h1>Lo siento la contraseña <%=request.getParameter("pwd") %> no es correcta</h1>
+	<h1>Lo siento la contraseña ${param.pwd} no es correcta</h1>
 	<br/>
-	<a href="login.jsp">Volver</a>
+	<a href="Controller?op=toLogin">Volver</a>
 </body>
 </html>

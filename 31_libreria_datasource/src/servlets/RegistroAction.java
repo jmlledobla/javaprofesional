@@ -11,20 +11,20 @@ import javax.servlet.http.HttpServletResponse;
 import javabeans.Cliente;
 import modelo.GestionClientes;
 
-/**
- * Servlet implementation class RegistroAction
- */
+
+
 @WebServlet("/RegistroAction")
 public class RegistroAction extends HttpServlet {
 	
 	protected void service(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		Cliente c = new Cliente(0, request.getParameter("usuario"), request.getParameter("password"), request.getParameter("email"), request.getParameter("telefono"));
-		GestionClientes gclientes=new GestionClientes();
-		
-		gclientes.altaCliente(c);
+		GestionClientes gestion=new GestionClientes();
+                Cliente c=new Cliente(0,request.getParameter("usuario"),
+                request.getParameter("password"),
+                        request.getParameter("email"),
+                        Integer.parseInt(request.getParameter("telefono")));
+		gestion.registrar(c);
 		
 		request.getRequestDispatcher("login.jsp").forward(request, response);
-		
 	}
 
 }

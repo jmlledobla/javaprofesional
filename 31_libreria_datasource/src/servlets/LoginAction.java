@@ -2,56 +2,51 @@ package servlets;
 
 import java.io.IOException;
 
-import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
 
 import modelo.GestionClientes;
+import modelo.GestionTemas;
 
-/**
- * Servlet implementation class Login
- */
+
+
 @WebServlet("/LoginAction")
 public class LoginAction extends HttpServlet {
-	private static final long serialVersionUID = 1L;
-
-	/**
-	 * @see HttpServlet#service(HttpServletRequest request, HttpServletResponse response)
-	 */
-	protected void service(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		String pwd=request.getParameter("pwd");
-		String us=request.getParameter("user");
-		GestionClientes gclientes=new GestionClientes();
-		if(gclientes.estaregistrado(us, pwd)){
-			String valorCookie="";
-			if(request.getParameter("recordar")!=null) {
-				valorCookie=request.getParameter("user");
-			}
-			guardarCookie(valorCookie,response);
-			//guardamos el usuario en un atributo de sesiï¿½n
-			HttpSession s=request.getSession();
-			s.setAttribute("user", request.getParameter("user"));		
-			//obtener requestdispatcher
-			RequestDispatcher rd=request.getRequestDispatcher("temas.jsp");
-			//trasnferir peticiï¿½n
-			rd.forward(request, response);
+	
+	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		String url;
+		GestionClientes gestion=new GestionClientes();
+		
+		if(gestion.estaRegistrado(request.getParameter("user"),request.getParameter("pwd"))){
 			
-		}else{
-			//obtener requestdispatcher
-			RequestDispatcher rd=request.getRequestDispatcher("error.jsp");
-			//trasnferir peticiï¿½n
-			rd.forward(request, response);
+            //request.setAttribute("temas", gtemas.obtenerTemas());
+            url="TemasAction";
+            if(request.getParameter("recordar")!=null){
+                  crearCookie(response, request.getParameter("user"));
+            }
+            else{
+                  crearCookie(response, "");
+            }
+
 		}
+		else{
+			
+			url="error.jsp";
+		}
+       
+        request.getRequestDispatcher(url).forward(request, response);
 	}
-	private void guardarCookie(String valor, HttpServletResponse resp) {
-		Cookie ck=new Cookie("user",valor);
-		ck.setMaxAge(200000);
-		resp.addCookie(ck);
-	}
+	private void crearCookie(HttpServletResponse response, String valor){
+        //crear objeto Cookie
+        Cookie ck=new Cookie("user",valor);
+        //periodo de vida
+        ck.setMaxAge(100000);
+        //Añade cookie a la cabecera de la respuesta
+        response.addCookie(ck);
+    }
 
 }
